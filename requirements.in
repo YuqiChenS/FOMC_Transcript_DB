@@ -1,0 +1,8 @@
+pandas==2.3.0
+nltk
+spacy
+gensim
+pyLDAvis
+bs4
+pymongo
+snowflake-connector-python

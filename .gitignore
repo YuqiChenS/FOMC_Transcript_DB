@@ -1,0 +1,6 @@
+.claude
+.in
+.DS_Store
+.vscode
+FOMC*
+ __pycache__
