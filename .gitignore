@@ -1,6 +1,9 @@
+data/
 .claude
 .in
 .DS_Store
 .vscode
-FOMC*
- __pycache__
+*.in
+FOMC_venv
+__pycache__
+

@@ -27,7 +27,7 @@ MONTH_TO_NUM = {"january": "01", "feburary": "02", "march": "03", "april": "04",
 
 HEADERS = {
     "User-Agent": (
-        "Mozilla/5.0 (academic research scraper; contact: chen.yuqi2@northeastern.edu)"
+        "Mozilla/5.0 (academic research scraper)"
     )
 }
 
@@ -125,7 +125,6 @@ def parse_month_date(month_text, date, current_year, date1 = None):
         except ValueError:
             month_num = datetime.strptime(month_str, "%B").month
 
-        
         if date1:
             raw_date = "-".join([date, date1])
         else:
@@ -222,8 +221,7 @@ class DB_Manager():
         for current_year in range(start_year, end_year + 1):
             time.sleep(scraper_sleep)
             
-            if current_year < 2011:
-                
+            if current_year < 2011:                
                 sub_url = build_dates_url(current_year)
                 resp = requests.get(sub_url, headers=HEADERS, timeout=15)
                 print(f"URL: {sub_url}")
