@@ -4,8 +4,12 @@ from datetime import datetime, timezone
 
 import pymongo
 from pymongo.errors import ConnectionFailure, ConfigurationError
+from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
+
+# Reads the repo-root .env if present; real environment variables win.
+load_dotenv()
 
 
 class MongoDatabase:

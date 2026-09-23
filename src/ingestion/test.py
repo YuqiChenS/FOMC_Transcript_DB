@@ -1,6 +1,6 @@
-from scraper_1993_1995 import Scraper1993to1995
-from scraper_1996_2007 import Scraper1996to2007
-from scraper_2008_present import Scraper2008Present
+from .scraper_1993_1995 import Scraper1993to1995
+from .scraper_1996_2007 import Scraper1996to2007
+from .scraper_2008_present import Scraper2008Present
 import time
 def main():
     S = Scraper1993to1995()

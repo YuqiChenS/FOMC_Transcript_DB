@@ -1,11 +1,14 @@
-from scraper_base import ScraperBase, build_dates_url, parse_meeting_end_date
+from .scraper_base import ScraperBase, build_dates_url, parse_meeting_end_date
 import re
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup 
 
 class Scraper1993to1995(ScraperBase):
-    
+
+    ERA_START = 1993
+    ERA_END = 1995
+
     @staticmethod
     def build_url(date_str: str):
             """Build the FOMC minutes URL for a given date string
@@ -20,7 +23,7 @@ class Scraper1993to1995(ScraperBase):
             return f"https://www.federalreserve.gov/fomc/MINUTES/{year}/{date_str}min.htm"
             
     def get_meeting_dates(self, year):
-        if year < 1993 or year > 1995:
+        if not self.handles(year):
             print("wrong year for this parser")
             return
         
@@ -76,7 +79,3 @@ class Scraper1993to1995(ScraperBase):
         print(meeting_dates)
         return meeting_dates
 
-    def get_minutes_text(self, url):
-        # this era's page has no <hr> splitting logic — different parsing entirely
-        ...
-        return {"raw_text": ..., "chair": ...}

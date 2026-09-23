@@ -1,10 +1,13 @@
-from scraper_base import ScraperBase, build_dates_url, parse_meeting_end_date, parse_month_date
+from .scraper_base import ScraperBase, build_dates_url, parse_meeting_end_date, parse_month_date
 import re
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
 class Scraper2008Present(ScraperBase):
+
+    ERA_START = 2008
+    ERA_END = None
 
     @staticmethod
     def build_url(date_str: str):
@@ -20,7 +23,7 @@ class Scraper2008Present(ScraperBase):
 
     def get_meeting_dates(self, year):
 
-        if year < 2008:
+        if not self.handles(year):
             print("wrong year for this parser")
             return
 
@@ -129,12 +132,4 @@ class Scraper2008Present(ScraperBase):
 
                     print(meeting_dates)
                     return meeting_dates
-
-    def get_minutes_text(self, url):
-        """Fetch and parse a single minutes page.
-
-        Return:
-            dict: {"raw_text": str, "chair": str | None}
-        """
-        ...
     

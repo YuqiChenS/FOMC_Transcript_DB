@@ -5,4 +5,5 @@ gensim
 pyLDAvis
 bs4
 pymongo
+python-dotenv
 snowflake-connector-python
