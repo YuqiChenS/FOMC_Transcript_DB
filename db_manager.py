@@ -102,7 +102,7 @@ def build_dates_url(year:int):
         return DATES_URL
     
 def parse_month_date(month_text, date, current_year, date1 = None):
-    """Parse a month label and dayd into a list of YYYYMMDD date strings
+    """Parse a month label and day into a list of YYYYMMDD date strings
 
     Args:
         month_text (str): Month label, possibly a slash-separated pair

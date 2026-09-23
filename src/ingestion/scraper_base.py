@@ -42,10 +42,50 @@ def parse_meeting_end_date(raw_date, current_year, month_num):
             return datetime(current_year, month_num, last_day)
     else:
         return datetime(current_year, month_num, int(raw_date))
+
+def parse_month_date(month_text, date, current_year, date1 = None):
+    """Parse a month label and day into a list of YYYYMMDD date strings
+
+    Args:
+        month_text (str): Month label, possibly a slash-separated pair
+        date (str): First day of the meeting as a string
+        current_year (int): The year of the meeting
+        date1 (str): Last day of the meeting if it spans multiple days
+
+    Return:
+        list: List of date strings in YYYYMMDD format for the meeting day(s)
+    """
+    day_range = []
+    for sep in ['/', '⁄', '∕']:
+        if sep in month_text:
+            month_str = month_text[-3:]
+        else:
+            month_str = month_text
+
+        try:
+            month_num = datetime.strptime(month_str, "%b").month
+        except ValueError:
+            month_num = datetime.strptime(month_str, "%B").month
+
+        if date1:
+            raw_date = "-".join([date, date1])
+        else:
+            raw_date = date
+
+        meeting_end = parse_meeting_end_date(raw_date, current_year, month_num)
+        date_str = meeting_end.strftime("%Y%m%d")
+        day_range.append(date_str)
+
+        if date1:
+            meeting_end1 = parse_meeting_end_date(raw_date, current_year, month_num)
+            date_str1 = meeting_end1.strftime("%Y%m%d")
+            day_range.append(date_str1)
+        
+        return day_range
     
 class ScraperBase(ABC):
     """Every era-specific scraper must implement these two methods."""
-    def __init(self):
+    def __init__(self):
         self.HEADERS = {"User-Agent": ("Mozilla/5.0 (academic research scraper)")}
 
     @abstractmethod
@@ -66,6 +106,7 @@ class ScraperBase(ABC):
         """
         ...
 
+    @staticmethod
     @abstractmethod
     def build_url(date_str: str):
         """Build the FOMC minutes URL for a given date string

@@ -1,0 +1,196 @@
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical1993.htm
+Status: 200
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+Found 16 panel-heading divs
+[{'meeting_date': ['19930202', '19930203'], 'year': 1993, 'month': 'February', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1993/19930202min.htm', 'scraped': False}, {'meeting_date': ['19930323'], 'year': 1993, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1993/19930323min.htm', 'scraped': False}, {'meeting_date': ['19930518'], 'year': 1993, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1993/19930518min.htm', 'scraped': False}, {'meeting_date': ['19930706', '19930707'], 'year': 1993, 'month': 'July', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1993/19930706min.htm', 'scraped': False}, {'meeting_date': ['19930817'], 'year': 1993, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1993/19930817min.htm', 'scraped': False}, {'meeting_date': ['19930921'], 'year': 1993, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1993/19930921min.htm', 'scraped': False}, {'meeting_date': ['19931116'], 'year': 1993, 'month': 'November', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1993/19931116min.htm', 'scraped': False}, {'meeting_date': ['19931221'], 'year': 1993, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1993/19931221min.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical1994.htm
+Status: 200
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+[{'meeting_date': ['19940203', '19940204'], 'year': 1994, 'month': 'February', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1994/19940203min.htm', 'scraped': False}, {'meeting_date': ['19940322'], 'year': 1994, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1994/19940322min.htm', 'scraped': False}, {'meeting_date': ['19940517'], 'year': 1994, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1994/19940517min.htm', 'scraped': False}, {'meeting_date': ['19940705', '19940706'], 'year': 1994, 'month': 'July', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1994/19940705min.htm', 'scraped': False}, {'meeting_date': ['19940816'], 'year': 1994, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1994/19940816min.htm', 'scraped': False}, {'meeting_date': ['19940927'], 'year': 1994, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1994/19940927min.htm', 'scraped': False}, {'meeting_date': ['19941115'], 'year': 1994, 'month': 'November', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1994/19941115min.htm', 'scraped': False}, {'meeting_date': ['19941220'], 'year': 1994, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1994/19941220min.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical1995.htm
+Status: 200
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+[{'meeting_date': ['19950201'], 'year': 1995, 'month': 'February', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1995/19950201min.htm', 'scraped': False}, {'meeting_date': ['19950328'], 'year': 1995, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1995/19950328min.htm', 'scraped': False}, {'meeting_date': ['19950523'], 'year': 1995, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1995/19950523min.htm', 'scraped': False}, {'meeting_date': ['19950705', '19950706'], 'year': 1995, 'month': 'July', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1995/19950705min.htm', 'scraped': False}, {'meeting_date': ['19950822'], 'year': 1995, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1995/19950822min.htm', 'scraped': False}, {'meeting_date': ['19950926'], 'year': 1995, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1995/19950926min.htm', 'scraped': False}, {'meeting_date': ['19951115'], 'year': 1995, 'month': 'November', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1995/19951115min.htm', 'scraped': False}, {'meeting_date': ['19951219'], 'year': 1995, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/MINUTES/1995/19951219min.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical1996.htm
+Status: 200
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+[{'meeting_date': ['19960130', '19960131'], 'year': 1996, 'month': 'January', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19960130.htm', 'scraped': False}, {'meeting_date': ['19960326'], 'year': 1996, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19960326.htm', 'scraped': False}, {'meeting_date': ['19960521'], 'year': 1996, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19960521.htm', 'scraped': False}, {'meeting_date': ['19960702', '19960703'], 'year': 1996, 'month': 'July', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19960702.htm', 'scraped': False}, {'meeting_date': ['19960820'], 'year': 1996, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19960820.htm', 'scraped': False}, {'meeting_date': ['19960924'], 'year': 1996, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19960924.htm', 'scraped': False}, {'meeting_date': ['19961113'], 'year': 1996, 'month': 'November', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19961113.htm', 'scraped': False}, {'meeting_date': ['19961217'], 'year': 1996, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19961217.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical1997.htm
+Status: 200
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+[{'meeting_date': ['19970204', '19970205'], 'year': 1997, 'month': 'February', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19970204.htm', 'scraped': False}, {'meeting_date': ['19970325'], 'year': 1997, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19970325.htm', 'scraped': False}, {'meeting_date': ['19970520'], 'year': 1997, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19970520.htm', 'scraped': False}, {'meeting_date': ['19970701', '19970702'], 'year': 1997, 'month': 'July', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19970701.htm', 'scraped': False}, {'meeting_date': ['19970819'], 'year': 1997, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19970819.htm', 'scraped': False}, {'meeting_date': ['19970930'], 'year': 1997, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19970930.htm', 'scraped': False}, {'meeting_date': ['19971112'], 'year': 1997, 'month': 'November', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19971112.htm', 'scraped': False}, {'meeting_date': ['19971216'], 'year': 1997, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19971216.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical1998.htm
+Status: 200
+Found 10 panel-heading divs
+Found 10 panel-heading divs
+Found 10 panel-heading divs
+Found 10 panel-heading divs
+Found 10 panel-heading divs
+Found 10 panel-heading divs
+Found 10 panel-heading divs
+Found 10 panel-heading divs
+Found 10 panel-heading divs
+Found 10 panel-heading divs
+[{'meeting_date': ['19980203', '19980204'], 'year': 1998, 'month': 'February', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19980203.htm', 'scraped': False}, {'meeting_date': ['19980331'], 'year': 1998, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19980331.htm', 'scraped': False}, {'meeting_date': ['19980519'], 'year': 1998, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19980519.htm', 'scraped': False}, {'meeting_date': ['19980701'], 'year': 1998, 'month': 'July', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19980701.htm', 'scraped': False}, {'meeting_date': ['19980818'], 'year': 1998, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19980818.htm', 'scraped': False}, {'meeting_date': ['19980929'], 'year': 1998, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19980929.htm', 'scraped': False}, {'meeting_date': ['19981117'], 'year': 1998, 'month': 'November', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19981117.htm', 'scraped': False}, {'meeting_date': ['19981222'], 'year': 1998, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19981222.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical1999.htm
+Status: 200
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+[{'meeting_date': ['19990202', '19990203'], 'year': 1999, 'month': 'February', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19990202.htm', 'scraped': False}, {'meeting_date': ['19990330'], 'year': 1999, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19990330.htm', 'scraped': False}, {'meeting_date': ['19990518'], 'year': 1999, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19990518.htm', 'scraped': False}, {'meeting_date': ['19990629', '19990630'], 'year': 1999, 'month': 'June', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19990629.htm', 'scraped': False}, {'meeting_date': ['19990824'], 'year': 1999, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19990824.htm', 'scraped': False}, {'meeting_date': ['19991005'], 'year': 1999, 'month': 'October', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19991005.htm', 'scraped': False}, {'meeting_date': ['19991116'], 'year': 1999, 'month': 'November', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19991116.htm', 'scraped': False}, {'meeting_date': ['19991221'], 'year': 1999, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/19991221.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical2000.htm
+Status: 200
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+[{'meeting_date': ['20000201', '20000202'], 'year': 2000, 'month': 'February', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20000201.htm', 'scraped': False}, {'meeting_date': ['20000321'], 'year': 2000, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20000321.htm', 'scraped': False}, {'meeting_date': ['20000516'], 'year': 2000, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20000516.htm', 'scraped': False}, {'meeting_date': ['20000627', '20000628'], 'year': 2000, 'month': 'June', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20000627.htm', 'scraped': False}, {'meeting_date': ['20000822'], 'year': 2000, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20000822.htm', 'scraped': False}, {'meeting_date': ['20001003'], 'year': 2000, 'month': 'October', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20001003.htm', 'scraped': False}, {'meeting_date': ['20001115'], 'year': 2000, 'month': 'November', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20001115.htm', 'scraped': False}, {'meeting_date': ['20001219'], 'year': 2000, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20001219.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical2001.htm
+Status: 200
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+[{'meeting_date': ['20010130', '20010131'], 'year': 2001, 'month': 'January', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20010130.htm', 'scraped': False}, {'meeting_date': ['20010320'], 'year': 2001, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20010320.htm', 'scraped': False}, {'meeting_date': ['20010515'], 'year': 2001, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20010515.htm', 'scraped': False}, {'meeting_date': ['20010626', '20010627'], 'year': 2001, 'month': 'June', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20010626.htm', 'scraped': False}, {'meeting_date': ['20010821'], 'year': 2001, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20010821.htm', 'scraped': False}, {'meeting_date': ['20011002'], 'year': 2001, 'month': 'October', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20011002.htm', 'scraped': False}, {'meeting_date': ['20011106'], 'year': 2001, 'month': 'November', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20011106.htm', 'scraped': False}, {'meeting_date': ['20011211'], 'year': 2001, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20011211.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical2002.htm
+Status: 200
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+[{'meeting_date': ['20020129', '20020130'], 'year': 2002, 'month': 'January', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20020129.htm', 'scraped': False}, {'meeting_date': ['20020319'], 'year': 2002, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20020319.htm', 'scraped': False}, {'meeting_date': ['20020507'], 'year': 2002, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20020507.htm', 'scraped': False}, {'meeting_date': ['20020625', '20020626'], 'year': 2002, 'month': 'June', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20020625.htm', 'scraped': False}, {'meeting_date': ['20020813'], 'year': 2002, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20020813.htm', 'scraped': False}, {'meeting_date': ['20020924'], 'year': 2002, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20020924.htm', 'scraped': False}, {'meeting_date': ['20021106'], 'year': 2002, 'month': 'November', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20021106.htm', 'scraped': False}, {'meeting_date': ['20021210'], 'year': 2002, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20021210.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical2003.htm
+Status: 200
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+Found 13 panel-heading divs
+[{'meeting_date': ['20030128', '20030129'], 'year': 2003, 'month': 'January', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20030128.htm', 'scraped': False}, {'meeting_date': ['20030318'], 'year': 2003, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20030318.htm', 'scraped': False}, {'meeting_date': ['20030506'], 'year': 2003, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20030506.htm', 'scraped': False}, {'meeting_date': ['20030624', '20030625'], 'year': 2003, 'month': 'June', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20030624.htm', 'scraped': False}, {'meeting_date': ['20030812'], 'year': 2003, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20030812.htm', 'scraped': False}, {'meeting_date': ['20030915'], 'year': 2003, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20030915.htm', 'scraped': False}, {'meeting_date': ['20030916'], 'year': 2003, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20030916.htm', 'scraped': False}, {'meeting_date': ['20031028'], 'year': 2003, 'month': 'October', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20031028.htm', 'scraped': False}, {'meeting_date': ['20031209'], 'year': 2003, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20031209.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical2004.htm
+Status: 200
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+[{'meeting_date': ['20040127', '20040128'], 'year': 2004, 'month': 'January', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20040127.htm', 'scraped': False}, {'meeting_date': ['20040316'], 'year': 2004, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20040316.htm', 'scraped': False}, {'meeting_date': ['20040504'], 'year': 2004, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20040504.htm', 'scraped': False}, {'meeting_date': ['20040629', '20040630'], 'year': 2004, 'month': 'June', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20040629.htm', 'scraped': False}, {'meeting_date': ['20040810'], 'year': 2004, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20040810.htm', 'scraped': False}, {'meeting_date': ['20040921'], 'year': 2004, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20040921.htm', 'scraped': False}, {'meeting_date': ['20041110'], 'year': 2004, 'month': 'November', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20041110.htm', 'scraped': False}, {'meeting_date': ['20041214'], 'year': 2004, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20041214.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical2005.htm
+Status: 200
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+[{'meeting_date': ['20050201', '20050202'], 'year': 2005, 'month': 'February', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20050201.htm', 'scraped': False}, {'meeting_date': ['20050322'], 'year': 2005, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20050322.htm', 'scraped': False}, {'meeting_date': ['20050503'], 'year': 2005, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20050503.htm', 'scraped': False}, {'meeting_date': ['20050629', '20050630'], 'year': 2005, 'month': 'June', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20050629.htm', 'scraped': False}, {'meeting_date': ['20050809'], 'year': 2005, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20050809.htm', 'scraped': False}, {'meeting_date': ['20050920'], 'year': 2005, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20050920.htm', 'scraped': False}, {'meeting_date': ['20051101'], 'year': 2005, 'month': 'November', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20051101.htm', 'scraped': False}, {'meeting_date': ['20051213'], 'year': 2005, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20051213.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical2006.htm
+Status: 200
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+Found 8 panel-heading divs
+[{'meeting_date': ['20060131'], 'year': 2006, 'month': 'January', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20060131.htm', 'scraped': False}, {'meeting_date': ['20060327', '20060328'], 'year': 2006, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20060327.htm', 'scraped': False}, {'meeting_date': ['20060510'], 'year': 2006, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20060510.htm', 'scraped': False}, {'meeting_date': ['20060628', '20060629'], 'year': 2006, 'month': 'June', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20060628.htm', 'scraped': False}, {'meeting_date': ['20060808'], 'year': 2006, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20060808.htm', 'scraped': False}, {'meeting_date': ['20060920'], 'year': 2006, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20060920.htm', 'scraped': False}, {'meeting_date': ['20061024', '20061025'], 'year': 2006, 'month': 'October', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20061024.htm', 'scraped': False}, {'meeting_date': ['20061212'], 'year': 2006, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20061212.htm', 'scraped': False}]
+URL: https://www.federalreserve.gov/monetarypolicy/fomchistorical2007.htm
+Status: 200
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+Found 11 panel-heading divs
+[{'meeting_date': ['20070130', '20070131'], 'year': 2007, 'month': 'January', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20070130.htm', 'scraped': False}, {'meeting_date': ['20070320', '20070321'], 'year': 2007, 'month': 'March', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20070320.htm', 'scraped': False}, {'meeting_date': ['20070509'], 'year': 2007, 'month': 'May', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20070509.htm', 'scraped': False}, {'meeting_date': ['20070627', '20070628'], 'year': 2007, 'month': 'June', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20070627.htm', 'scraped': False}, {'meeting_date': ['20070807'], 'year': 2007, 'month': 'August', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20070807.htm', 'scraped': False}, {'meeting_date': ['20070918'], 'year': 2007, 'month': 'September', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20070918.htm', 'scraped': False}, {'meeting_date': ['20071030', '20071031'], 'year': 2007, 'month': 'October', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20071030.htm', 'scraped': False}, {'meeting_date': ['20071211'], 'year': 2007, 'month': 'December', 'minutes_url': 'https://www.federalreserve.gov/fomc/minutes/20071211.htm', 'scraped': False}]

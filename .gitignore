@@ -6,4 +6,4 @@ data/
 *.in
 FOMC_venv
 __pycache__
-
+.env
