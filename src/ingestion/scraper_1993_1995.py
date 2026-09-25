@@ -69,13 +69,12 @@ class Scraper1993to1995(ScraperBase):
                 day_range.append(date_str2)
 
             meeting_dates.append({
-                "meeting_date": day_range,
+                "meeting_end": day_range[-1],
                 "year": year,
                 "month": month_str,
-                "minutes_url": self.build_url(date_str),
+                "minutes_url": self.build_url(day_range[-1]),
                 "scraped": False
                                 })
 
-        print(meeting_dates)
         return meeting_dates
 

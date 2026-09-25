@@ -51,9 +51,10 @@ class MongoDatabase:
                 validator={
                     "$jsonSchema": {
                         "bsonType": "object",
-                        "required": ["meeting_date", "raw_text", "scraped_at"],
+                        "required": ["meeting_end", "raw_text", "scraped_at"],
                         "properties": {
-                            "meeting_date": {"bsonType": ["string", "array"]},
+                            "meeting_end": {"bsonType": "string"},
+                            "year": {"bsonType": "int"},
                             "raw_text": {"bsonType": "string", "minLength": 20},
                             "chair": {"bsonType": ["string", "null"]},
                             "scraped_at": {"bsonType": "date"},
@@ -67,14 +68,14 @@ class MongoDatabase:
 
     def _ensure_indexes(self):
         """Indexes tied to actual query patterns, not speculative ones."""
-        self.metadata.create_index([("meeting_date", pymongo.ASCENDING)], unique=True)
+        self.metadata.create_index([("meeting_end", pymongo.ASCENDING)], unique=True)
         self.metadata.create_index([("year", pymongo.ASCENDING)])
 
-        self.minutes_raw.create_index([("meeting_date", pymongo.ASCENDING)], unique=True)
+        self.minutes_raw.create_index([("meeting_end", pymongo.ASCENDING)], unique=True)
         self.minutes_raw.create_index([("raw_text", pymongo.TEXT)])
         self.minutes_raw.create_index([("year", pymongo.ASCENDING)])
 
-        self.minutes_clean.create_index([("meeting_date", pymongo.ASCENDING)], unique=True)
+        self.minutes_clean.create_index([("meeting_end", pymongo.ASCENDING)], unique=True)
         self.minutes_clean.create_index([("dominant_topic", pymongo.ASCENDING)])
 
     def integrity_check(self) -> dict:

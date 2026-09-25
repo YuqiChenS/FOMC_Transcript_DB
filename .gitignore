@@ -7,3 +7,5 @@ data/
 FOMC_venv
 __pycache__
 .env
+.cc_writes
+.gitignore

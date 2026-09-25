@@ -146,7 +146,12 @@ class ScraperBase(ABC):
         """Return meeting date records for the given year.
 
         Must return a list of dicts shaped like:
-        {"meeting_date": [str], "year": int, "month": str, "minutes_url": str}
+        {"meeting_end": str, "year": int, "month": str, "minutes_url": str,
+         "scraped": bool}
+
+        meeting_end is the single YYYYMMDD date the minutes are published
+        under — the last day of a multi-day meeting. It is the unique key for
+        both the metadata and minutes_raw collections.
         """
         ...
 

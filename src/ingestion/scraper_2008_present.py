@@ -57,10 +57,10 @@ class Scraper2008Present(ScraperBase):
                                             year=year, date1=last_day)
                 
                 meeting_dates.append({
-                        "meeting_date": day_range,
+                        "meeting_end": day_range[-1],
                         "year": year,
                         "month": month_str,
-                        "minutes_url": self.build_url(day_range[0]),
+                        "minutes_url": self.build_url(day_range[-1]),
                         "scraped": False
                     })
 
@@ -123,7 +123,7 @@ class Scraper2008Present(ScraperBase):
 
                     date_str = meeting_end.strftime("%Y%m%d")
                     meeting_dates.append({
-                        "meeting_date": [date_str],
+                        "meeting_end": date_str,
                         "year": year,
                         "month": month_str,
                         "minutes_url": self.build_url(date_str),
