@@ -1,3 +1,9 @@
+from itertools import Dictionary
+from gensim import LdaModel, CoherenceModel
+
+
+
+
 def fit_lda(bigram_docs, num_topics=4):
     """Train an LDA topic model on bigram-enhanced documents and print coherence
 

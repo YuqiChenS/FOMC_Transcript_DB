@@ -1,8 +1,11 @@
 from .scraper_base import ScraperBase, build_dates_url, parse_meeting_end_date
+import logging
 import re
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
+
+logger = logging.getLogger(__name__)
 
 class Scraper1996to2007(ScraperBase):
 
@@ -23,19 +26,20 @@ class Scraper1996to2007(ScraperBase):
     
     def get_meeting_dates(self, year):
         if not self.handles(year):
-            print("wrong year for this parser")
+            logger.warning("%s is outside %s (%s-%s)",
+                           year, type(self).__name__, self.ERA_START, self.ERA_END)
             return
-        
+
         meeting_dates = []
         sub_url = build_dates_url(year)
         resp = requests.get(sub_url, headers=self.HEADERS, timeout=15)
-        print(f"URL: {sub_url}")
-        print(f"Status: {resp.status_code}")
+        logger.debug("GET %s -> %s", sub_url, resp.status_code)
         soup = BeautifulSoup(resp.text, "html.parser")
 
         panels = soup.find_all("div", class_="panel-heading")
+        logger.debug("%s: %s panel headings", year, len(panels))
+
         for heading in panels:
-            print(f"Found {len(panels)} panel-heading divs")
             h5 = heading.find("h5")
             if not h5:
                 continue
@@ -58,7 +62,7 @@ class Scraper1996to2007(ScraperBase):
                 meeting_end2 = parse_meeting_end_date(last_day, year, month_num)
 
             if meeting_end is None:
-                print("meeting end is empty")
+                logger.debug("%s: unparseable meeting date in %r", year, month_str)
                 continue
 
             date_str = meeting_end.strftime("%Y%m%d")
@@ -75,5 +79,4 @@ class Scraper1996to2007(ScraperBase):
                 "scraped": False
                                 })
 
-        print(meeting_dates)
         return meeting_dates

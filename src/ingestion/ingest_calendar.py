@@ -1,7 +1,6 @@
 import logging
 import time
 from datetime import datetime
-
 from .scraper_registry import ScraperRegistry
 
 logger = logging.getLogger(__name__)
@@ -26,39 +25,21 @@ class CalendarIngestor:
         self.registry = registry or ScraperRegistry()
         self.sleep_between = sleep_between
 
-    def _get_scraper_for(self, dates):
-        """Resolve the era scraper covering the meeting's year
+    def _get_scraper_for(self, year):
+        """Resolve the era scraper covering a calendar year
 
         Args:
-            dates (list): Date strings in YYYYMMDD format
+            year (int): Four digit year
 
         Return:
             ScraperBase or None: Scraper for that era, or None if no era claims it
         """
-        year = int(dates[0][:4])
         try:
             return self.registry.for_year(year)
         except ValueError:
-            logger.warning("no scraper registered for year %s (%s)", year, dates)
+            logger.warning("no scraper registered for year %s", year)
             return None
 
-    def _process_one(self, doc):
-        dates = self._as_dates(doc["meeting_end"])
-        if not dates or self._already_ingested(doc["meeting_end"]):
-            return "skipped"
-
-        scraper = self._get_scraper_for(dates)
-        if scraper is None:
-            return "skipped"
-
-        parsed = self._fetch_first_available(scraper, dates)
-        if parsed is None:
-            return "failed"
-
-        self._persist(doc, parsed)
-        time.sleep(self.sleep_between)
-        return "stored"
-    
     def _persist(self, doc):
         """Store the raw minutes and mark the metadata record scraped
 
@@ -70,3 +51,63 @@ class CalendarIngestor:
         """
 
         self.db.metadata.insert_one(doc)
+
+    def _already_ingested(self, meeting_end):
+        """Report whether raw calendar for this meeting are already stored
+
+        Args:
+            meeting_end (str): Date string in YYYYMMDD format
+
+        Return:
+            bool: True if a raw document already exists for this meeting
+        """
+        return self.db.metadata.find_one({"meeting_end": meeting_end}) is not None
+
+    def ingest_calendar(self, year):
+        """Scrape and store every meeting record for one calendar year
+
+        Args:
+            year (int): Four digit year
+
+        Return:
+            int: Number of new metadata records stored
+        """
+        scraper = self._get_scraper_for(year)
+        if scraper is None:
+            return 0
+
+        # Era scrapers return None rather than [] for an out-of-era year.
+        records = scraper.get_meeting_dates(year) or []
+
+        stored = 0
+        for record in records:
+            if self._already_ingested(record["meeting_end"]):
+                continue
+            self._persist(record)
+            stored += 1
+
+        logger.info("%s: %s new of %s meetings", year, stored, len(records))
+        return stored
+
+    def ingest_years(self, start_year, end_year):
+        """Scrape and store meeting records across an inclusive year range
+
+        Args:
+            start_year (int): First year to scrape
+            end_year (int): Last year to scrape, inclusive
+
+        Return:
+            int: Total number of new metadata records stored
+        """
+        total = 0
+        for year in range(start_year, end_year + 1):
+            try:
+                total += self.ingest_calendar(year)
+            except Exception:
+                logger.exception("%s failed, continuing", year)
+            time.sleep(self.sleep_between)
+
+        logger.info("calendar: %s new records across %s-%s",
+                    total, start_year, end_year)
+        return total
+

@@ -1,10 +1,13 @@
 # src/fomc_pipeline/ingestion/scraper_base.py
 from abc import ABC, abstractmethod
 from datetime import datetime
+import logging
 import re
 import requests
 import time
 from bs4 import BeautifulSoup
+
+logger = logging.getLogger(__name__)
 
 def build_dates_url(year:int):
     """Build the URL for the FOMC calendar or historical meeting dates page for a given year
@@ -132,14 +135,75 @@ class ScraperBase(ABC):
                 resp = requests.get(url, headers=self.HEADERS, timeout=self.TIMEOUT)
                 if resp.status_code == 200:
                     return resp
-                print(f"Status {resp.status_code} for {url}")
+                logger.warning("HTTP %s for %s (attempt %s/%s)",
+                               resp.status_code, url, attempt + 1, self.MAX_RETRIES)
             except requests.RequestException as e:
-                print(f"Request failed for {url}: {e}")
+                logger.warning("request failed for %s (attempt %s/%s): %s",
+                               url, attempt + 1, self.MAX_RETRIES, e)
 
             if attempt < self.MAX_RETRIES - 1:
                 time.sleep(self.RETRY_SLEEP)
 
         return None
+
+    def parse_panel_headings(self, soup, year):
+        """Parse the pre-2011 fomchistorical<year>.htm calendar layout
+
+        Meetings are listed as <h5> headings inside panel-heading divs. This
+        layout is shared by every era before 2011, so the 1993-1995,
+        1996-2007 and 2008-2010 scrapers all read it the same way; only
+        build_url differs between them.
+
+        Args:
+            soup (BeautifulSoup): Parsed calendar page
+            year (int): Four digit year being scraped
+
+        Return:
+            list: Meeting records shaped per get_meeting_dates
+        """
+        meeting_dates = []
+
+        panels = soup.find_all("div", class_="panel-heading")
+        logger.debug("%s: %s panel headings", year, len(panels))
+
+        for heading in panels:
+            h5 = heading.find("h5")
+            if not h5:
+                continue
+
+            match = re.search(r"(\w+)\s+(\d+)(?:-(\d+))?\s+Meeting.*(\d{4})",
+                              h5.get_text(strip=True))
+            if not match:
+                continue
+
+            month_str = match.group(1)
+            first_day = match.group(2)
+            last_day = match.group(3)
+
+            try:
+                month_num = datetime.strptime(month_str, "%b").month
+            except ValueError:
+                month_num = datetime.strptime(month_str, "%B").month
+
+            meeting_end = parse_meeting_end_date(first_day, year, month_num)
+            if meeting_end is None:
+                logger.debug("%s: unparseable meeting date in %r", year, month_str)
+                continue
+
+            day_range = [meeting_end.strftime("%Y%m%d")]
+            if last_day:
+                meeting_end2 = parse_meeting_end_date(last_day, year, month_num)
+                day_range.append(meeting_end2.strftime("%Y%m%d"))
+
+            meeting_dates.append({
+                "meeting_end": day_range[-1],
+                "year": year,
+                "month": month_str,
+                "minutes_url": self.build_url(day_range[-1]),
+                "scraped": False,
+            })
+
+        return meeting_dates
 
     @abstractmethod
     def get_meeting_dates(self, year: int) -> list[dict]:

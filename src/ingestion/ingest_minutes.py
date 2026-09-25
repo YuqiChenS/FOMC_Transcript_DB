@@ -38,7 +38,7 @@ class MinutesIngestor:
                 skipped += 1
             else:
                 failed += 1
-        logger.info("ingestion complete", extra={"stored": stored, "skipped": skipped, "failed": failed})
+        logger.info("minutes: %s stored, %s skipped, %s failed", stored, skipped, failed)
         return {"stored": stored, "skipped": skipped, "failed": failed}
 
     def _process_one(self, doc):
