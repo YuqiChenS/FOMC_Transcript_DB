@@ -6,7 +6,7 @@ from .scraper_registry import ScraperRegistry
 
 logger = logging.getLogger(__name__)
 
-SCRAPER_SLEEP = 5
+SCRAPER_SLEEP = 2
 
 class MinutesIngestor:
     """Drive the era scrapers over every unscraped metadata record.
@@ -29,15 +29,37 @@ class MinutesIngestor:
         self.sleep_between = sleep_between
 
     def ingest_unscraped(self):
+        """Fetch and store raw minutes for every metadata record not yet scraped
+
+        Args:
+            None
+
+        Return:
+            dict: Counts of stored, skipped and failed meetings
+        """
+        pending = self.db.metadata.count_documents({"scraped": False})
+        already = self.db.minutes_raw.count_documents({})
+        logger.info("minutes: %s records pending, %s already in minutes_raw "
+                    "(fetching one takes ~%ss)", pending, already, self.sleep_between)
+
         stored = skipped = failed = 0
-        for doc in self.db.metadata.find({"scraped": False}):
+
+        for n, doc in enumerate(self.db.metadata.find({"scraped": False}), start=1):
             result = self._process_one(doc)
             if result == "stored":
                 stored += 1
+                # Progress at INFO: a silent run with a sleep between each
+                # fetch is indistinguishable from a hang.
+                logger.info("[%s/%s] stored %s", n, pending, doc["meeting_end"])
             elif result == "skipped":
                 skipped += 1
             else:
                 failed += 1
+
+        if skipped == pending and pending:
+            logger.warning("every record was skipped: minutes_raw already has a "
+                           "document for each. Clear it to force a re-scrape.")
+
         logger.info("minutes: %s stored, %s skipped, %s failed", stored, skipped, failed)
         return {"stored": stored, "skipped": skipped, "failed": failed}
 
@@ -50,7 +72,7 @@ class MinutesIngestor:
         if scraper is None:
             return "skipped"
 
-        parsed = self._fetch_minutes(scraper, meeting_end)
+        parsed = self._fetch_minutes(scraper, doc)
         if parsed is None:
             return "failed"
 
@@ -88,21 +110,29 @@ class MinutesIngestor:
             logger.warning("no scraper registered for year %s (%s)", year, meeting_end)
             return None
 
-    def _fetch_minutes(self, scraper, meeting_end):
+    def _fetch_minutes(self, scraper, doc):
         """Fetch and parse the minutes page for a meeting
+
+        Uses the URL the scraper stored at discovery time. Which day of a
+        multi-day meeting the minutes live under is era-specific, so the
+        scraper that read the calendar is the only thing that knows it --
+        meeting_end alone is not enough to rebuild the URL.
 
         Args:
             scraper (ScraperBase): Scraper covering this meeting's era
-            meeting_end (str): Date string in YYYYMMDD format
+            doc (dict): Metadata record for the meeting
 
         Return:
             dict or None: {"raw_text", "chair"}, or None if the page yielded no text
         """
-        parsed = scraper.get_minutes_text(scraper.build_url(meeting_end))
+        meeting_end = doc["meeting_end"]
+        url = doc.get("minutes_url") or scraper.build_url(meeting_end)
+
+        parsed = scraper.get_minutes_text(url)
         if parsed and parsed.get("raw_text"):
             return parsed
 
-        logger.warning("no minutes text found for %s", meeting_end)
+        logger.warning("no minutes text found for %s (%s)", meeting_end, url)
         return None
 
     def _persist(self, doc, parsed):

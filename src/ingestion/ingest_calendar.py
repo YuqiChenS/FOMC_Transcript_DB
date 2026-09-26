@@ -89,16 +89,25 @@ class CalendarIngestor:
         logger.info("%s: %s new of %s meetings", year, stored, len(records))
         return stored
 
-    def ingest_years(self, start_year, end_year):
+    def ingest_years(self, start_year, end_year, rebuild=False):
         """Scrape and store meeting records across an inclusive year range
 
         Args:
             start_year (int): First year to scrape
             end_year (int): Last year to scrape, inclusive
+            rebuild (bool): Delete existing records in range before scraping.
+                Needed when meeting_end itself changes, since upserting on a
+                corrected key would leave the wrong record behind.
 
         Return:
             int: Total number of new metadata records stored
         """
+        if rebuild:
+            removed = self.db.metadata.delete_many(
+                {"year": {"$gte": start_year, "$lte": end_year}}).deleted_count
+            logger.info("rebuild: dropped %s metadata records for %s-%s",
+                        removed, start_year, end_year)
+
         total = 0
         for year in range(start_year, end_year + 1):
             try:

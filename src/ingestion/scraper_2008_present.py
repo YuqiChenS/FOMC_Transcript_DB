@@ -1,4 +1,6 @@
-from .scraper_base import ScraperBase, build_dates_url, parse_meeting_end_date, parse_month_date
+from .scraper_base import (MEETING_HEADING_RE, ScraperBase, build_dates_url,
+                           month_number, parse_meeting_end_date,
+                           parse_month_date, split_month_label)
 import logging
 import re
 from datetime import datetime
@@ -51,7 +53,7 @@ class Scraper2008Present(ScraperBase):
                 if not h5:
                     continue
 
-                match = re.search(r"(\w+)\s+(\d+)(?:-(\d+))?\s+Meeting.*(\d{4})", h5.get_text(strip=True))
+                match = MEETING_HEADING_RE.search(h5.get_text(strip=True))
                 if not match:
                     continue
 
@@ -61,12 +63,16 @@ class Scraper2008Present(ScraperBase):
 
                 day_range = parse_month_date(month_text=month_str, date=first_day, \
                                             current_year=year, date1=last_day)
+                if not day_range:
+                    continue
+
+                minutes_url = self.find_minutes_link(p) or self.build_url(day_range[-1])
 
                 meeting_dates.append({
                         "meeting_end": day_range[-1],
                         "year": year,
                         "month": month_str,
-                        "minutes_url": self.build_url(day_range[-1]),
+                        "minutes_url": minutes_url,
                         "scraped": False
                     })
 
@@ -111,28 +117,29 @@ class Scraper2008Present(ScraperBase):
                     if not raw_date or raw_date in ("TBD", "—"):
                         continue
 
-                    # Handle split headings e.g. "Jan/Feb"
-                    month_str = month_text
-                    for sep in ['/', '⁄', '∕']:
-                        if sep in month_text:
-                            month_str = month_text[-3:]
-                            break
+                    # Handle split headings e.g. "Jan/Feb", where month_str
+                    # becomes the later month and must not be advanced again.
+                    month_str, spans_months = split_month_label(month_text)
+                    month_num = month_number(month_str)
 
-                    try:
-                        month_num = datetime.strptime(month_str, "%b").month
-                    except ValueError:
-                        month_num = datetime.strptime(month_str, "%B").month
-
-                    meeting_end = parse_meeting_end_date(raw_date, year, month_num)
+                    meeting_end = parse_meeting_end_date(
+                        raw_date, year, month_num, month_is_end=spans_months)
                     if meeting_end is None:
                         continue
 
                     date_str = meeting_end.strftime("%Y%m%d")
+                    minutes_url = self.find_minutes_link(meeting_row)
+                    if minutes_url is None:
+                        # Minutes appear ~3 weeks after a meeting; recent and
+                        # future meetings simply have no link yet.
+                        logger.debug("%s: no minutes link yet, skipping", date_str)
+                        continue
+
                     meeting_dates.append({
                         "meeting_end": date_str,
                         "year": year,
                         "month": month_str,
-                        "minutes_url": self.build_url(date_str),
+                        "minutes_url": minutes_url,
                         "scraped": False
                     })
 

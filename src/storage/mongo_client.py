@@ -39,32 +39,48 @@ class MongoDatabase:
         self.minutes_raw = self.db["fomc_minutes_raw"]
         self.minutes_clean = self.db["fomc_minutes_clean"]
         self.lda_metadata = self.db["fomc_lda_metadata"]
-
+        self.bigrams = self.db['fomc_minutes_bigrams']
         self._apply_schema_validation()
         self._ensure_indexes()
 
+    MINUTES_RAW_VALIDATOR = {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "required": ["meeting_end", "raw_text", "scraped_at"],
+            "properties": {
+                "meeting_end": {"bsonType": "string"},
+                "year": {"bsonType": "int"},
+                "raw_text": {"bsonType": "string", "minLength": 20},
+                "chair": {"bsonType": ["string", "null"]},
+                "scraped_at": {"bsonType": "date"},
+            },
+        }
+    }
+
     def _apply_schema_validation(self):
-        """Enforce document shape at the DB layer, not just in application code."""
+        """Enforce document shape at the DB layer, not just in application code.
+
+        create_collection only applies a validator to a collection that does
+        not exist yet, so an existing collection keeps whatever validator it
+        was created with — silently ignoring every later schema change. Fall
+        back to collMod so the stored validator always matches this file.
+        """
         try:
             self.db.create_collection(
                 "fomc_minutes_raw",
-                validator={
-                    "$jsonSchema": {
-                        "bsonType": "object",
-                        "required": ["meeting_end", "raw_text", "scraped_at"],
-                        "properties": {
-                            "meeting_end": {"bsonType": "string"},
-                            "year": {"bsonType": "int"},
-                            "raw_text": {"bsonType": "string", "minLength": 20},
-                            "chair": {"bsonType": ["string", "null"]},
-                            "scraped_at": {"bsonType": "date"},
-                        },
-                    }
-                },
+                validator=self.MINUTES_RAW_VALIDATOR,
                 validationLevel="moderate",
             )
+            logger.info("created fomc_minutes_raw with schema validation")
         except pymongo.errors.CollectionInvalid:
-            pass
+            self.db.command(
+                "collMod",
+                "fomc_minutes_raw",
+                validator=self.MINUTES_RAW_VALIDATOR,
+                validationLevel="moderate",
+            )
+            logger.debug("updated fomc_minutes_raw validator")
+
 
     def _ensure_indexes(self):
         """Indexes tied to actual query patterns, not speculative ones."""
@@ -76,7 +92,6 @@ class MongoDatabase:
         self.minutes_raw.create_index([("year", pymongo.ASCENDING)])
 
         self.minutes_clean.create_index([("meeting_end", pymongo.ASCENDING)], unique=True)
-        self.minutes_clean.create_index([("dominant_topic", pymongo.ASCENDING)])
 
     def integrity_check(self) -> dict:
 

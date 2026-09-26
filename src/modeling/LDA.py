@@ -1,44 +1,94 @@
-from itertools import Dictionary
-from gensim import LdaModel, CoherenceModel
+import logging
+from datetime import datetime
+from gensim.corpora import Dictionary
+from gensim.models import LdaModel, CoherenceModel
+
+logger = logging.getLogger(__name__)
 
 
+RANDOM_STATE = 42
 
+class LDAModel():
+    def __init__(self, db, *, min_count, threshold, num_topics=4, passes=1):
+        """Initialize the tokenizer
 
-def fit_lda(bigram_docs, num_topics=4):
-    """Train an LDA topic model on bigram-enhanced documents and print coherence
+        Args:
+            db (MongoDatabase): Connected database wrapper
 
-    Args:
-        bigram_docs (list): List of tokenized documents with bigrams applied
-        num_topics (int): Number of topics for the LDA model
+        Return:
+            None
+        """
+        self.db = db
+        self.min_count = min_count
+        self.num_topics = num_topics
+        self.passes = passes
+        self.threshold = threshold       
 
-    Return:
-        tuple: (LdaModel, Dictionary, corpus)
-    """
-    dictionary = Dictionary(bigram_docs)
-    dictionary.filter_extremes(no_below=5, no_above=0.7)
-    print(f"Dictionary size: {len(dictionary)} unique tokens")
+    def fit_lda(self):
+        """Train an LDA topic model on bigram-enhanced documents
 
-    corpus = [dictionary.doc2bow(doc) for doc in bigram_docs]
+        """
+        docs = list(self.db.minutes_clean.find(
+            {"meeting_end": {"$exists": True}, "tokens": {"$exists": True}}
+        ))
+        if not docs:
+            logger.warning("no cleaned tokens exist")
+            return {"updated": 0, "phrases": 0}
 
-    lda_model = LdaModel(
-        corpus=corpus,
-        id2word=dictionary,
-        num_topics=num_topics,
-        passes=50,
-        chunksize=10,
-        random_state=42
-    )
+        all_tokens = [doc["tokens"]for doc in docs]
 
-    # Print topics
-    for idx, topic in lda_model.print_topics(num_words=10):
-        print(f"\nTopic {idx}: {topic}")
+        dictionary = Dictionary(all_tokens)
+        logger.info("dictionary: %s unique tokens", len(dictionary))
 
-    coherence = CoherenceModel(
-        model=lda_model,
-        texts=bigram_docs,
-        dictionary=dictionary,
-        coherence='c_v'
-    )
-    print(f"\n{num_topics} topics, Coherence Score: {coherence.get_coherence():.4f}")
+        corpus = [dictionary.doc2bow(tokens) for tokens in all_tokens]
 
-    return lda_model, dictionary, corpus
+        lda_model = LdaModel(
+            corpus=corpus,
+            id2word=dictionary,
+            num_topics=self.num_topics,
+            passes=self.passes,
+            chunksize=10,
+            random_state=RANDOM_STATE,
+        )
+
+        for idx, topic in lda_model.print_topics(num_words=10):
+            logger.info("topic %s: %s", idx, topic)
+
+        coherence = CoherenceModel(
+            model=lda_model,
+            texts=all_tokens,
+            dictionary=dictionary,
+            coherence="c_v",
+        )
+
+        topic_scores = coherence.get_coherence_per_topic()
+        topics = lda_model.show_topics(
+            num_topics=-1,
+            num_words=10,
+            formatted=False,
+        )
+
+        results = [
+            {
+                "topic_id": int(topic_id),
+                "coherence": float(score),
+                "terms": [
+                    {
+                        "word": str(word),
+                        "weight": float(weight),
+                    }
+                    for word, weight in terms
+                ],
+            }
+            for (topic_id, terms), score in zip(topics, topic_scores)
+        ]
+
+        self.db.lda_metadata.insert_one({
+            "bigram_min_word_count": int(self.min_count),
+            "bigram_threshold": float(self.threshold),
+            "topic_number": int(self.num_topics),
+            "passes": int(self.passes),
+            "results": results,
+            "built_at": datetime.now(),
+        })
+
