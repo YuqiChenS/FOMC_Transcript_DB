@@ -10,3 +10,6 @@ __pycache__
 .cc_writes
 .gitignore
 test.py
+
+# saved gensim models
+models/

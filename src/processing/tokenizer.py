@@ -1,10 +1,11 @@
 import re
-
+import logging
 from .config import CHUNK_SIZE, KEEP_POS, MIN_TOKEN_LENGTH, get_nlp, get_stopwords
 
 _NON_ALPHA = re.compile(r"[^a-z\s]")
 _WHITESPACE = re.compile(r"\s+")
 
+logger = logging.getLogger(__name__)
 
 def normalize(text):
     """Lowercase text and strip everything that is not a letter or space
@@ -22,12 +23,15 @@ def normalize(text):
 def tokenize_text(text):
     """Lemmatize and filter tokens from a text string using spaCy
 
+    Filtering happens here, before phrasing, so the phrase model only ever
+    sees content words.
+
     Args:
         text (str): Raw text to tokenize
 
     Return:
-        list: Lemmatized nouns, adjectives and verbs, excluding stopwords
-            and tokens shorter than MIN_TOKEN_LENGTH characters
+        list: Lemmatized nouns and verbs, excluding stopwords and tokens
+            shorter than MIN_TOKEN_LENGTH characters
     """
     text = normalize(text)
     if not text:
@@ -37,7 +41,8 @@ def tokenize_text(text):
     stopwords = get_stopwords()
 
     tokens = []
-    for start in range(0, len(text), CHUNK_SIZE):
+    chunks = range(0, len(text), CHUNK_SIZE)
+    for n, start in enumerate(chunks, start=1):
         chunk = text[start:start + CHUNK_SIZE]
         for token in nlp(chunk):
             lemma = token.lemma_
@@ -50,9 +55,7 @@ def tokenize_text(text):
             if token.is_space:
                 continue
             tokens.append(lemma)
+        logger.info("%s chunks tokenized", n)
 
     return tokens
-
-def tokenize_text_new(text):
-    return text.split()
 

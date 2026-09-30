@@ -5,17 +5,24 @@ logger = logging.getLogger(__name__)
 
 SPACY_MODEL = "en_core_web_sm"
 
-KEEP_POS = ("NOUN", "ADJ", "VERB")
-MIN_TOKEN_LENGTH = 5
-
 CHUNK_SIZE = 900_000
+
+KEEP_POS = ("NOUN")
+
+MIN_TOKEN_LENGTH = 3
 
 FOMC_STOPWORDS = {
     "website", "official", "chairman", "authorize", "paragraph", "subcommittee",
-    "dealer", "direct", "authorization", "position", "third", "fourth", "adjourn",
-    "press", "locklocke", "govwebsite", "board", "research",
-    "governor", "assistant", "attend", "meeting", 
-}
+    "dealer", "direct", "authorization", "position", "first", "second", "target",
+    "third", "fourth", "adjourn", "division", "staff", "note", "participant",
+    "press", "locklocke", "govwebsite", "board", "research", "fomc", "comment",
+    "governor", "assistant", "attend", "meeting", "bank", "january", "february",
+    "march", "april", "may", "june", "july", "august", "september", "october",
+    "november", "december", "though", "system", "united", "states", "amid", "range",
+    "quarter", "survey", "desk", "assess", "york", "special", "adviser", "reserve",
+    "seem", "indication", "select", "exchange", "purpose", "day", "committee", "goal",
+    "price", "run", "regard", "directive", "objective", "equipment", "facility", "reading", 
+    "projection", "vice", "secretariat", "member" }
 
 
 @lru_cache(maxsize=1)

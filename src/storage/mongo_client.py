@@ -94,7 +94,6 @@ class MongoDatabase:
         self.minutes_clean.create_index([("meeting_end", pymongo.ASCENDING)], unique=True)
 
     def integrity_check(self) -> dict:
-
         return {
             "connected": True,
             "collections": self.db.list_collection_names(),
