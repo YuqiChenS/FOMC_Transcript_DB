@@ -1,9 +1,0 @@
-Topic 0: 0.019*"sustainable" + 0.016*"productivity" + 0.012*"strength" + 0.011*"anecdotal" + 0.010*"favorable" + 0.010*"believe" + 0.010*"rapid" + 0.008*"context" + 0.008*"indication" + 0.008*"profit"
-
-Topic 1: 0.017*"weakness" + 0.016*"fiscal" + 0.014*"recovery" + 0.013*"statement" + 0.012*"easing" + 0.011*"equipment_software" + 0.009*"positive" + 0.008*"downside" + 0.008*"strengthen" + 0.008*"pickup"
-
-Topic 2: 0.026*"arrangement" + 0.012*"exceed" + 0.012*"purpose" + 0.012*"undertake" + 0.011*"obligation" + 0.009*"approve" + 0.009*"subject" + 0.009*"central" + 0.009*"select" + 0.009*"holding"
-
-Topic 3: 0.012*"governor" + 0.010*"asset" + 0.009*"judge" + 0.007*"accommodative" + 0.006*"medium" + 0.006*"reading" + 0.006*"global" + 0.006*"program" + 0.006*"holding" + 0.005*"payment"
-
-4 topics, Coherence Score: 0.5288
