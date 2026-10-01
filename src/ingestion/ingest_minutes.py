@@ -9,9 +9,7 @@ logger = logging.getLogger(__name__)
 SCRAPER_SLEEP = 2
 
 class MinutesIngestor:
-    """Drive the era scrapers over every unscraped metadata record.
-
-    """
+    """Downloads the minutes text for every meeting that hasn't been scraped yet"""
 
     def __init__(self, db, registry=None, sleep_between=SCRAPER_SLEEP):
         """Initialize the ingestor
@@ -48,8 +46,6 @@ class MinutesIngestor:
             result = self._process_one(doc)
             if result == "stored":
                 stored += 1
-                # Progress at INFO: a silent run with a sleep between each
-                # fetch is indistinguishable from a hang.
                 logger.info("[%s/%s] stored %s", n, pending, doc["meeting_end"])
             elif result == "skipped":
                 skipped += 1
@@ -64,6 +60,7 @@ class MinutesIngestor:
         return {"stored": stored, "skipped": skipped, "failed": failed}
 
     def _process_one(self, doc):
+        """Scrape and store one meeting, returns "stored", "skipped" or "failed" """
         meeting_end = doc["meeting_end"]
         if not meeting_end or self._already_ingested(meeting_end):
             return "skipped"
@@ -82,9 +79,6 @@ class MinutesIngestor:
 
     def _already_ingested(self, meeting_end):
         """Report whether raw minutes for this meeting are already stored
-
-        Queries on the same key _persist writes, so the check actually matches
-        and the unique index on minutes_raw.meeting_end is never tripped.
 
         Args:
             meeting_end (str): Date string in YYYYMMDD format
@@ -113,10 +107,8 @@ class MinutesIngestor:
     def _fetch_minutes(self, scraper, doc):
         """Fetch and parse the minutes page for a meeting
 
-        Uses the URL the scraper stored at discovery time. Which day of a
-        multi-day meeting the minutes live under is era-specific, so the
-        scraper that read the calendar is the only thing that knows it --
-        meeting_end alone is not enough to rebuild the URL.
+        Uses the URL saved from the calendar page, since you can't always
+        rebuild it from meeting_end.
 
         Args:
             scraper (ScraperBase): Scraper covering this meeting's era

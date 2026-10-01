@@ -7,7 +7,7 @@ SPACY_MODEL = "en_core_web_sm"
 
 CHUNK_SIZE = 900_000
 
-KEEP_POS = ("NOUN")
+KEEP_POS = ("NOUN",)
 
 MIN_TOKEN_LENGTH = 3
 
@@ -22,7 +22,8 @@ FOMC_STOPWORDS = {
     "quarter", "survey", "desk", "assess", "york", "special", "adviser", "reserve",
     "seem", "indication", "select", "exchange", "purpose", "day", "committee", "goal",
     "price", "run", "regard", "directive", "objective", "equipment", "facility", "reading", 
-    "projection", "vice", "secretariat", "member" }
+    "projection", "vice", "secretariat", "member", "couple", "path", "sentence", "background",
+    "statement", "end", "implication", "vote", "inclusion", "basis", "point"}
 
 
 @lru_cache(maxsize=1)

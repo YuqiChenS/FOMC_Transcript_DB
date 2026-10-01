@@ -1,4 +1,3 @@
-# src/fomc_pipeline/ingestion/scraper_base.py
 from abc import ABC, abstractmethod
 from datetime import datetime
 import logging
@@ -28,14 +27,10 @@ FED_ROOT = "https://www.federalreserve.gov"
 
 MONTH_SEPARATORS = ('/', '⁄', '∕')
 
-# Month group allows separators so "January/February 31-1" survives intact;
-# a bare \w+ captures only "February" and hides the month crossing.
+# month can be "January/February" so allow slashes in the first group
 MEETING_HEADING_RE = re.compile(r"([\w/⁄∕]+)\s+(\d+)(?:-(\d+))?\s+Meeting.*(\d{4})")
 
-# Most minutes pages say "minutes" in the path, but a few (e.g. June 2008)
-# are published as /monetarypolicy/fomc<YYYYMMDD>.htm with only the PDF
-# carrying the word. Anchored on the date so fomcpressconf/fomcprojtabl and
-# friends do not match.
+# some minutes pages (like June 2008) are just fomcYYYYMMDD.htm without "minutes"
 MINUTES_HTML_RE = re.compile(r"/fomc(?:minutes)?\d{8}\.htm$", re.I)
 
 
@@ -73,11 +68,9 @@ def month_number(month_str):
 def parse_meeting_end_date(raw_date, current_year, month_num, month_is_end=False):
     """Parse a raw date string into a datetime for the last day of a meeting
 
-    A range whose last day is smaller than its first, e.g. "31-1", crosses a
-    month boundary. Normally month_num names the month the meeting *starts*
-    in, so the end date rolls into the next month. When the caller has already
-    resolved a split label like "Jan/Feb" down to the later month, pass
-    month_is_end=True so the month is not advanced a second time.
+    If the last day is smaller than the first (e.g. "31-1") the meeting goes
+    into the next month. If month_num is already the later month (from a
+    "Jan/Feb" label) pass month_is_end=True so it doesn't get bumped twice.
 
     Args:
         raw_date (str): Raw date string, may be a single day or a dash-separated range
@@ -97,9 +90,7 @@ def parse_meeting_end_date(raw_date, current_year, month_num, month_is_end=False
 
         if last_day < first_day:
             if month_is_end:
-                # month_num is already the later month, so do not advance it.
-                # A January end still means the meeting began the previous
-                # December, so the year rolls forward.
+                # Dec/Jan meeting ends in January of the next year
                 year = current_year + 1 if month_num == 1 else current_year
                 return datetime(year, month_num, last_day)
 
@@ -137,8 +128,7 @@ def parse_month_date(month_text, date, current_year, date1=None):
     if end is None:
         return []
 
-    # Derive the start from the resolved end, so this holds whether month_num
-    # named the starting or the ending month.
+    # work backwards from the end date to get the start date
     if int(date1) < int(date):
         start_month = end.month - 1 or 12
         start_year = end.year - 1 if start_month == 12 else end.year
@@ -150,30 +140,24 @@ def parse_month_date(month_text, date, current_year, date1=None):
 
 
 class ScraperBase(ABC):
-    """Every era-specific scraper must implement these two methods."""
+    """Base class for the scrapers, each one covers a range of years (era)"""
 
-    # Inclusive year range this scraper is responsible for.
-    # ERA_END of None means "no upper bound".
-    ERA_START: int = None
-    ERA_END: int = None
+    # years this scraper covers, ERA_END = None means up to today
+    ERA_START = None
+    ERA_END = None
 
     MAX_RETRIES = 3
     RETRY_SLEEP = 5
     TIMEOUT = 15
-
-    def __init__(self):
-        self.HEADERS = {"User-Agent": ("Mozilla/5.0 (academic research scraper)")}
+    HEADERS = {"User-Agent": "Mozilla/5.0 (academic research scraper)"}
 
     @staticmethod
     def find_minutes_link(container):
         """Pull the minutes URL out of a calendar entry
 
-        The calendar pages link each meeting to its own minutes, which is the
-        only reliable source for that URL: the day used varies per meeting
-        (1999 uses the first day of a two-day meeting, 2003 the last), and the
-        path scheme changes mid-2007. Constructing the URL from a date cannot
-        express either. Modern pages offer both a PDF and an HTML version;
-        only the HTML one is parseable here.
+        Better than building the URL from the date because the Fed isn't
+        consistent (1999 uses the first day of the meeting, 2003 the last, and
+        the URL format changes in 2007). Only the .htm link is used, not the PDF.
 
         Args:
             container (Tag): Calendar element holding one meeting's links
@@ -240,10 +224,8 @@ class ScraperBase(ABC):
     def parse_panel_headings(self, soup, year):
         """Parse the pre-2011 fomchistorical<year>.htm calendar layout
 
-        Meetings are listed as <h5> headings inside panel-heading divs. This
-        layout is shared by every era before 2011, so the 1993-1995,
-        1996-2007 and 2008-2010 scrapers all read it the same way; only
-        build_url differs between them.
+        Every year before 2011 uses this layout (meetings are <h5> headings
+        inside panel-heading divs) so all three scrapers share it.
 
         Args:
             soup (BeautifulSoup): Parsed calendar page
@@ -270,8 +252,6 @@ class ScraperBase(ABC):
             first_day = match.group(2)
             last_day = match.group(3)
 
-            # parse_month_date owns the split-label and rollover handling, so
-            # every layout resolves dates the same way.
             day_range = parse_month_date(month_label, first_day, year, last_day)
             if not day_range:
                 logger.debug("%s: unparseable meeting date in %r", year, month_label)
@@ -279,7 +259,7 @@ class ScraperBase(ABC):
 
             month_str = split_month_label(month_label)[0]
 
-            # The page's own link beats anything we could reconstruct.
+            # use the link on the page, only build it ourselves if it's missing
             minutes_url = self.find_minutes_link(heading.parent)
             if minutes_url is None:
                 minutes_url = self.build_url(day_range[-1])
@@ -298,17 +278,12 @@ class ScraperBase(ABC):
 
     @abstractmethod
     def get_meeting_dates(self, year: int) -> list[dict]:
-        """Return meeting date records for the given year.
+        """Return a list of meeting dicts for the year:
+        {"meeting_end": str, "year": int, "month": str, "minutes_url": str, "scraped": bool}
 
-        Must return a list of dicts shaped like:
-        {"meeting_end": str, "year": int, "month": str, "minutes_url": str,
-         "scraped": bool}
-
-        meeting_end is the single YYYYMMDD date the minutes are published
-        under — the last day of a multi-day meeting. It is the unique key for
-        both the metadata and minutes_raw collections.
+        meeting_end (YYYYMMDD, last day of the meeting) is the unique key in Mongo
         """
-        ...
+        pass
 
     @staticmethod
     @abstractmethod
@@ -321,15 +296,14 @@ class ScraperBase(ABC):
         Return:
             str: URL to the FOMC minutes page for the given date
         """
-        ...
+        pass
 
     @staticmethod
     def content_root(soup):
         """Narrow a minutes page down to its article body
 
-        Modern pages wrap the minutes in #article; everything outside it is
-        the .gov banner, navigation and the Board's footer address. Older
-        pages have no such wrapper, so fall back to the whole document.
+        Newer pages put the minutes in #article, older ones don't have it so
+        just use the whole page.
 
         Args:
             soup (BeautifulSoup): Parsed minutes page
@@ -345,11 +319,10 @@ class ScraperBase(ABC):
     def article_paragraphs(root):
         """Collect paragraph text without double-counting nested markup
 
-        The Fed's pre-2011 HTML leaves <p> tags unclosed. html.parser nests
-        them rather than auto-closing, so find_all("p") returns outer and
-        inner paragraphs alike and get_text() on an outer one repeats every
-        descendant -- inflating a 58 KB document to 2.6 MB. Taking only
-        paragraphs with no <p> ancestor yields each passage exactly once.
+        Old pages never close their <p> tags so html.parser nests them, and
+        get_text() on the outer one repeats everything inside it (the text was
+        coming out way too big). Skipping any <p> that's inside another <p>
+        fixes it.
 
         Args:
             root (Tag): Element to search
@@ -357,13 +330,14 @@ class ScraperBase(ABC):
         Return:
             list: Paragraph strings in document order
         """
-        return [
-            text
-            for p in root.find_all("p")
-            if not p.find_parent("p")
-            for text in [p.get_text(" ", strip=True)]
-            if text
-        ]
+        paragraphs = []
+        for p in root.find_all("p"):
+            if p.find_parent("p"):
+                continue
+            text = p.get_text(" ", strip=True)
+            if text:
+                paragraphs.append(text)
+        return paragraphs
 
     def get_minutes_text(self, url: str) -> dict:
         """Fetch and parse a single minutes page.

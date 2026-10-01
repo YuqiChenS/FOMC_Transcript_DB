@@ -3,8 +3,6 @@ from .scraper_base import (MEETING_HEADING_RE, ScraperBase, build_dates_url,
                            parse_month_date, split_month_label)
 import logging
 import re
-from datetime import datetime
-import requests
 from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
@@ -27,21 +25,28 @@ class Scraper2008Present(ScraperBase):
         return f"https://www.federalreserve.gov/monetarypolicy/fomcminutes{date_str}.htm"
 
     def get_meeting_dates(self, year):
+        """Return meeting date records for the given year
 
+        The site has 3 layouts in this era: 2008-2010 (same as older years),
+        2011-2020, and 2021+ (fomccalendars.htm).
+
+        Args:
+            year (int): Four digit year
+
+        Return:
+            list: Meeting records (empty if the year isn't in this era)
+        """
         if not self.handles(year):
-            logger.warning("%s is outside %s (%s-present)",
-                           year, type(self).__name__, self.ERA_START)
-            return
+            logger.warning("%s is before %s", year, self.ERA_START)
+            return []
 
         meeting_dates = []
-        url = build_dates_url(year)
-        resp = requests.get(url, headers=self.HEADERS, timeout=15)
-        logger.debug("GET %s -> %s", url, resp.status_code)
+        resp = self.fetch(build_dates_url(year))
+        if resp is None:
+            return []
         soup = BeautifulSoup(resp.text, "html.parser")
 
         if year < 2011:
-            # 2008-2010 still use the historical calendar layout, same as the
-            # pre-2008 eras; only the minutes URL scheme differs.
             return self.parse_panel_headings(soup, year)
 
         elif year <= 2020:
@@ -57,14 +62,15 @@ class Scraper2008Present(ScraperBase):
                 if not match:
                     continue
 
-                month_str  = match.group(1)
-                first_day  = match.group(2)
-                last_day   = match.group(3)
+                month_label = match.group(1)
+                first_day = match.group(2)
+                last_day = match.group(3)
 
-                day_range = parse_month_date(month_text=month_str, date=first_day, \
+                day_range = parse_month_date(month_text=month_label, date=first_day, \
                                             current_year=year, date1=last_day)
                 if not day_range:
                     continue
+                month_str = split_month_label(month_label)[0]
 
                 minutes_url = self.find_minutes_link(p) or self.build_url(day_range[-1])
 
@@ -78,13 +84,7 @@ class Scraper2008Present(ScraperBase):
 
             return meeting_dates
         else:
-            # Different Logic for handling modern dates web layout
-            url = build_dates_url(year)
-            resp = requests.get(url, headers=self.HEADERS, timeout=15)
-            logger.debug("GET %s -> %s", url, resp.status_code)
-
-            soup = BeautifulSoup(resp.text, "html.parser")
-
+            # 2021+ are all on one page (fomccalendars.htm)
             panels = soup.find_all("div", class_="panel-heading")
             logger.debug("%s: %s panel headings", year, len(panels))
 
@@ -96,8 +96,7 @@ class Scraper2008Present(ScraperBase):
                 if not match:
                     continue
 
-                # fomccalendars.htm lists several years on one page; keep only
-                # the one asked for so the caller's per-year loop stays honest.
+                # page has several years on it, only keep the one we want
                 panel_year = int(match.group(1))
                 if panel_year != year:
                     continue
@@ -117,8 +116,7 @@ class Scraper2008Present(ScraperBase):
                     if not raw_date or raw_date in ("TBD", "—"):
                         continue
 
-                    # Handle split headings e.g. "Jan/Feb", where month_str
-                    # becomes the later month and must not be advanced again.
+                    # "Jan/Feb" -> "Feb", spans_months=True
                     month_str, spans_months = split_month_label(month_text)
                     month_num = month_number(month_str)
 
@@ -130,8 +128,7 @@ class Scraper2008Present(ScraperBase):
                     date_str = meeting_end.strftime("%Y%m%d")
                     minutes_url = self.find_minutes_link(meeting_row)
                     if minutes_url is None:
-                        # Minutes appear ~3 weeks after a meeting; recent and
-                        # future meetings simply have no link yet.
+                        # minutes come out ~3 weeks after the meeting
                         logger.debug("%s: no minutes link yet, skipping", date_str)
                         continue
 

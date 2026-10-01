@@ -3,7 +3,6 @@ from .scraper_1993_1995 import Scraper1993to1995
 from .scraper_1996_2007 import Scraper1996to2007
 from .scraper_2008_present import Scraper2008Present
 
-# Registered newest-era-last; each class declares its own ERA_START/ERA_END.
 SCRAPERS = (
     Scraper1993to1995,
     Scraper1996to2007,
@@ -12,10 +11,9 @@ SCRAPERS = (
 
 
 class ScraperRegistry:
-    """Map a year to the era scraper responsible for it.
+    """Picks the right scraper for a given year.
 
-    Instances are cached, so a caller looping over many meetings reuses one
-    scraper per era rather than constructing a new one per document.
+    Keeps one instance per scraper so we don't create a new one for every meeting.
     """
 
     def __init__(self, scrapers=SCRAPERS):
@@ -50,13 +48,3 @@ class ScraperRegistry:
 
         raise ValueError(f"no scraper registered for year {year}")
 
-    def years_covered(self):
-        """Report each registered scraper's era, for sanity checking coverage
-
-        Args:
-            None
-
-        Return:
-            list: (class name, ERA_START, ERA_END) tuples
-        """
-        return [(cls.__name__, cls.ERA_START, cls.ERA_END) for cls in self._classes]

@@ -1,14 +1,12 @@
 import logging
 import time
-from datetime import datetime
 from .scraper_registry import ScraperRegistry
 
 logger = logging.getLogger(__name__)
 SCRAPER_SLEEP = 5
 
 class CalendarIngestor:
-    '''Drive the calendar scrapers
-    '''
+    """Scrapes the meeting calendar for each year and stores it in fomc_metadata"""
 
     def __init__(self, db, registry=None, sleep_between=SCRAPER_SLEEP):
         """Initialize the ingestor
@@ -41,25 +39,24 @@ class CalendarIngestor:
             return None
 
     def _persist(self, doc):
-        """Store the raw minutes and mark the metadata record scraped
+        """Insert one meeting record into the metadata collection
 
         Args:
             doc (dict): The metadata record being ingested
-    
+
         Return:
             None
         """
-
         self.db.metadata.insert_one(doc)
 
     def _already_ingested(self, meeting_end):
-        """Report whether raw calendar for this meeting are already stored
+        """Check if this meeting is already in the metadata collection
 
         Args:
             meeting_end (str): Date string in YYYYMMDD format
 
         Return:
-            bool: True if a raw document already exists for this meeting
+            bool: True if the meeting is already stored
         """
         return self.db.metadata.find_one({"meeting_end": meeting_end}) is not None
 
@@ -76,8 +73,7 @@ class CalendarIngestor:
         if scraper is None:
             return 0
 
-        # Era scrapers return None rather than [] for an out-of-era year.
-        records = scraper.get_meeting_dates(year) or []
+        records = scraper.get_meeting_dates(year)
 
         stored = 0
         for record in records:
@@ -95,9 +91,8 @@ class CalendarIngestor:
         Args:
             start_year (int): First year to scrape
             end_year (int): Last year to scrape, inclusive
-            rebuild (bool): Delete existing records in range before scraping.
-                Needed when meeting_end itself changes, since upserting on a
-                corrected key would leave the wrong record behind.
+            rebuild (bool): Delete the existing records in the range first
+                (use this if the date parsing changes)
 
         Return:
             int: Total number of new metadata records stored

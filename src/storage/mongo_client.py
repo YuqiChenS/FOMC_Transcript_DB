@@ -8,24 +8,18 @@ from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 
-# Reads the repo-root .env if present; real environment variables win.
 load_dotenv()
 
 
 class MongoDatabase:
-    """Single point of connection + schema setup for the fomc database."""
+    """Connects to Mongo and sets up the fomc collections"""
 
     def __init__(self):
         uri = os.environ.get("MONGO_URI")
         if not uri:
             raise ConfigurationError("MONGO_URI environment variable is not set")
 
-        self.client = pymongo.MongoClient(
-            uri,
-            serverSelectionTimeoutMS=5000,   
-            maxPoolSize=20,
-            retryWrites=True,
-        )
+        self.client = pymongo.MongoClient(uri, serverSelectionTimeoutMS=5000)
 
         try:
             self.client.admin.command("ping")
@@ -39,7 +33,7 @@ class MongoDatabase:
         self.minutes_raw = self.db["fomc_minutes_raw"]
         self.minutes_clean = self.db["fomc_minutes_clean"]
         self.lda_metadata = self.db["fomc_lda_metadata"]
-        self.bigrams = self.db['fomc_minutes_bigrams']
+        self.bigrams = self.db["fomc_minutes_bigrams"]
         self._apply_schema_validation()
         self._ensure_indexes()
 
@@ -58,12 +52,10 @@ class MongoDatabase:
     }
 
     def _apply_schema_validation(self):
-        """Enforce document shape at the DB layer, not just in application code.
+        """Add a schema validator to fomc_minutes_raw
 
-        create_collection only applies a validator to a collection that does
-        not exist yet, so an existing collection keeps whatever validator it
-        was created with — silently ignoring every later schema change. Fall
-        back to collMod so the stored validator always matches this file.
+        create_collection only works the first time, so if the collection
+        already exists use collMod to update the validator instead.
         """
         try:
             self.db.create_collection(
@@ -81,9 +73,8 @@ class MongoDatabase:
             )
             logger.debug("updated fomc_minutes_raw validator")
 
-
     def _ensure_indexes(self):
-        """Indexes tied to actual query patterns, not speculative ones."""
+        """meeting_end is the unique key, text index is for keyword search"""
         self.metadata.create_index([("meeting_end", pymongo.ASCENDING)], unique=True)
         self.metadata.create_index([("year", pymongo.ASCENDING)])
 
@@ -93,9 +84,9 @@ class MongoDatabase:
 
         self.minutes_clean.create_index([("meeting_end", pymongo.ASCENDING)], unique=True)
 
-    def integrity_check(self) -> dict:
+    def integrity_check(self):
+        """Quick summary of what's in the database"""
         return {
-            "connected": True,
             "collections": self.db.list_collection_names(),
             "counts": {
                 "metadata": self.metadata.count_documents({}),
