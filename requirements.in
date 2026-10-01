@@ -7,3 +7,4 @@ bs4
 pymongo
 python-dotenv
 snowflake-connector-python
+streamlit>=1.64

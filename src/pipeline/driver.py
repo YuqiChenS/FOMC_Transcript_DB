@@ -1,6 +1,5 @@
 import argparse
 import logging
-from pathlib import Path
 from ..storage.mongo_client import MongoDatabase
 from ..ingestion.ingest_minutes import MinutesIngestor
 from ..ingestion.ingest_calendar import CalendarIngestor
@@ -11,7 +10,7 @@ START_YEAR = 1993
 END_YEAR = 2026
 
 logger = logging.getLogger(__name__)
-STAGES = ("calendar", "minutes", "tokens", "lda", "topics")
+STAGES = ("calendar", "minutes", "tokens", "lda")
 
 def main():
     parser = argparse.ArgumentParser()
@@ -30,9 +29,6 @@ def main():
     # lda
     parser.add_argument("--num-topics", type=int, default=4)
     parser.add_argument("--passes", type=int, default=20)
-    parser.add_argument("--model", type=Path, default=None,
-                        help="model file for the topics stage, e.g. models/lda_2026-10-01_1045.model "
-                             "(defaults to the newest)")
     parser.add_argument("--retrain", action="store_true",
                         help="train a new LDA model even if one is saved in models/")
 
@@ -59,8 +55,6 @@ def main():
     if "lda" in args.stages:
         LDAModel(db, num_topics=args.num_topics, passes=args.passes,
                 no_below=args.no_below, no_above=args.no_above, retrain=args.retrain).fit_lda()
-    if "topics" in args.stages:
-        LDAModel(db).assign_topics(args.model)
 
 if __name__ == "__main__":
     main()
